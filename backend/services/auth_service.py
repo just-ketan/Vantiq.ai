@@ -34,7 +34,14 @@ def authenticate_user(db:Session, email:str, password:str):
 		return None
 
 	if not verify_password(password, user.hashed_password):
-		return None
+		raise AuthException(
+			ErrorCode.INVALID_CREDENTIALS,
+			"Invalid email or password",
+		)
 
 	token = create_access_token({"sub": str(user.id)})
+	logger.info(
+		"User '%s' authenticated",
+		user.email,
+	)
 	return token

@@ -21,7 +21,7 @@ from sqlalchemy.orm import Session
 from api.deps.db import get_db
 from core.config import settings
 from models.user import User
-
+from core.logger import logger
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="/auth/token"
 )
@@ -32,7 +32,7 @@ def get_current_user(
     token: str = Depends(oauth2_scheme),
     db: Session = Depends(get_db)
 ):
-    print("TOKEN:", token)
+    logger.debug("JWT received")
 
     credentials_exception = HTTPException(
         status_code=401,
@@ -46,7 +46,7 @@ def get_current_user(
             algorithms=[settings.ALGORITHM]
         )
 
-        print("PAYLOAD:", payload)
+        logger.debug("JWT decoded successfully")
 
         user_id = payload.get("sub")
         print("USER ID:", user_id)
@@ -64,7 +64,10 @@ def get_current_user(
         .first()
     )
 
-    print("USER:", user)
+    logger.info(
+        "Authenticated user %s",
+        user.email,
+    )
 
     if user is None:
         raise credentials_exception
