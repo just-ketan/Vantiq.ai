@@ -3,8 +3,12 @@ from models.document import Document
 from models.user import User
 from models.upload import Upload
 from models.enums import (DocumentStatus, ProcessingStage,)
+from ai.pipeline.ingestion_pipeline import IngestionPipeline
 
 class DocumentService:
+    def __init__(self):
+        self.pipeline = IngestionPipeline()
+
     def create_document(self, db:Session, upload: Upload, current_user: User) -> Document:
         document = Document(
             upload_id = upload.id,
@@ -23,8 +27,8 @@ class DocumentService:
 
     def get_document(self, db:Session, document_id, current_user: User):
         return (
-            db.query(document)
-            .filter(Document.id == document.id, Document.user_id == current_user.id)
+            db.query(Document)
+            .filter(Document.id == document_id, Document.user_id == current_user.id)
             .first()
         )
 
@@ -39,3 +43,7 @@ class DocumentService:
         db.commit()
         db.refresh(document)
         return document
+
+    def extract_document(self, db:Session, document: Document):
+        extraction = self.pipeline.extract_document(document)
+        return extraction

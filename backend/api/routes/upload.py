@@ -60,3 +60,4 @@ def delete_document(
     return {
         "message": "Upload deleted successfully"
     }
+
