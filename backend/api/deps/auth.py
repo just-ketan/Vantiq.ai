@@ -10,8 +10,6 @@ from api.deps.db import get_db
 from models.user import User
 from uuid import UUID
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
-
 from uuid import UUID
 from jose import JWTError, jwt
 from fastapi import Depends, HTTPException
@@ -22,8 +20,9 @@ from api.deps.db import get_db
 from core.config import settings
 from models.user import User
 from core.logger import logger
+
 oauth2_scheme = OAuth2PasswordBearer(
-    tokenUrl="/auth/token"
+    tokenUrl="/api/v1/auth/token"
 )
 
 from uuid import UUID

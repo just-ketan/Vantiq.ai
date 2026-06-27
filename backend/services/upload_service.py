@@ -11,11 +11,13 @@ from http import HTTPStatus
 from core.exceptions import UploadException
 from core.error_codes import ErrorCode
 from fastapi import UploadFile
+from services.document_service import DocumentService
 
 class UploadService:
 
     def __init__(self):
         self.storage = get_storage()
+        self.document_service = DocumentService()
 
     async def upload_file(
         self,
@@ -48,6 +50,11 @@ class UploadService:
         db.add(upload)
         db.commit()
         db.refresh(upload)
+        self.document_service.create_document(
+            db=db,
+            upload=upload,
+            current_user=current_user,
+        )
 
         logger.info(
             "User %s uploaded %s (%d bytes)",
