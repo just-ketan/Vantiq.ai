@@ -1,9 +1,11 @@
 from ai.extraction.txt import TxtExtractor
+from ai.extraction.pdf import PDFExtractor
 
 class ExtractorFactory:
     def __init__(self):
         self.extractors = [
             TxtExtractor(),
+            PDFExtractor(),
         ]
 
     def get_extractor(self, mime_type: str):

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from ai.schemas.extraction import DocumentExtraction
-
+from models.document import Document
 class BaseExtractor(ABC):
     @abstractmethod
     def supports(self, mime_type: str) -> bool:
@@ -10,7 +10,7 @@ class BaseExtractor(ABC):
         pass
 
     @abstractmethod
-    def extract(self, file_path: str) -> DocumentExtraction:
+    def extract(self, document: Document) -> DocumentExtraction:
         """
         Extract text and metadata from the document.
         """

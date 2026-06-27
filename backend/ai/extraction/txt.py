@@ -17,7 +17,7 @@ class TxtExtractor(BaseExtractor):
             "Extracted TXT document '%s'",
             file_path,
         )
-        text = Path(file_path).read_text(
+        text = Path(document.upload.storage_path).read_text(
             encoding="utf-8",
             errors="ignore",
         )
@@ -33,4 +33,7 @@ class TxtExtractor(BaseExtractor):
             metadata={
                 "page_count": 1,
             },
+            mime_type=document.mime_type,
+            file_name=document.filename,
+            extractor="TxtExtractor",
         )

@@ -7,5 +7,4 @@ class IngestionPipeline:
 
     def extract_document(self, document: Document):
         extractor = self.extractor_factory.get_extractor(document.mime_type)
-        extraction = extractor.extract(document.upload.storage_path)
-        return extraction
+        return extractor.extract(document)
